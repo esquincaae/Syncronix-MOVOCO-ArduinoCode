@@ -29,19 +29,19 @@ void setup() {
   lcd.setBacklightPin(3, POSITIVE);
   lcd.setBacklight(HIGH);
   lcd.begin(16, 2); // inicializar el LCD con 16 columnas y 2 filas
-  lcd.print("Amps: ");
 }
 
 void loop() {
-  float Irms = calculateIrms(NUM_SAMPLES); // Calcular corriente RMS
-  lcd.setCursor(6, 0);
-  lcd.print(Irms);
-  lcd.print(" A"); // Imprimir el valor de la corriente en la LCD
-  delay(1000);
+  //float Irms = 
+  calculateIrms(NUM_SAMPLES); // Calcular corriente RMS
+  //lcd.setCursor(6, 0);
+  //lcd.print(Irms);
+  //lcd.print(" A"); // Imprimir el valor de la corriente en la LCD
+  //delay(1);
   calculateVolt();
 }
 
-float calculateVolt(){
+void calculateVolt(){
     for ( int i = 0; i < 100; i++ ) {
         sensorValue1 = analogRead(A1); // Lectura del sensor en el pin A0
         if (analogRead(A1) > 511) {
@@ -50,7 +50,7 @@ float calculateVolt(){
         else {
             val[i] = 0; // En otro caso, guarda 0
         }
-        delay(1);
+        delay(5000);
     }
 
     max_v = 0;
@@ -78,8 +78,8 @@ float calculateVolt(){
     lcd.print("Volts: "); 
     lcd.print(Veff); //muestra en LCD
     lcd.print(" V");
-    Serial.print("Volts");
-    Serial.println(Veff); //muestra en Monitor
+    //Serial.print("Volts");
+    //Serial.println(Veff); //muestra en Monitor
 
     VmaxD = 0;
 
@@ -94,8 +94,13 @@ float calculateIrms(int num_samples) {
     // Convertir a corriente
     float I = ((VREF / 2.0) - (value / 1024.0) * VREF) / SENSITIVITY;
     sum += I * I; // sumar el cuadrado de la corriente
-    delay(1); // Pequeña pausa para estabilización
+    delay(5000); // Pequeña pausa para estabilización
+
   }
-  return sqrt(sum / (float)num_samples); // Calcular la raíz cuadrada de la media
+  float irms = sqrt(sum / (float)num_samples); // Calcular la raíz cuadrada de la media
+  lcd.setCursor(6, 0);
+  lcd.print("Amps: ");
+  lcd.print(irms);
+  lcd.print(" A"); // Imprimir el valor de la corriente en la LCD
 }
 
