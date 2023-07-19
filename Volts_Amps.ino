@@ -33,11 +33,7 @@ void setup() {
 
 void loop() {
   //float Irms = 
-  calculateIrms(NUM_SAMPLES); // Calcular corriente RMS
-  //lcd.setCursor(6, 0);
-  //lcd.print(Irms);
-  //lcd.print(" A"); // Imprimir el valor de la corriente en la LCD
-  //delay(1);
+  calculateIrms(NUM_SAMPLES);
   calculateVolt();
 }
 
@@ -50,7 +46,7 @@ void calculateVolt(){
         else {
             val[i] = 0; // En otro caso, guarda 0
         }
-        delay(5000);
+        delay(1);
     }
 
     max_v = 0;
@@ -83,7 +79,7 @@ void calculateVolt(){
 
     VmaxD = 0;
 
-    delay(100);
+    delay(500);
 }
 
 // Función para calcular la corriente RMS
@@ -94,11 +90,11 @@ float calculateIrms(int num_samples) {
     // Convertir a corriente
     float I = ((VREF / 2.0) - (value / 1024.0) * VREF) / SENSITIVITY;
     sum += I * I; // sumar el cuadrado de la corriente
-    delay(5000); // Pequeña pausa para estabilización
+    delay(500); // Pequeña pausa para estabilización
 
   }
   float irms = sqrt(sum / (float)num_samples); // Calcular la raíz cuadrada de la media
-  lcd.setCursor(6, 0);
+  lcd.setCursor(0, 0);
   lcd.print("Amps: ");
   lcd.print(irms);
   lcd.print(" A"); // Imprimir el valor de la corriente en la LCD
